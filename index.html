@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Raghav!</title>
+    <style>
+        h1 {
+            font-size: 50px;
+        }
+
+        body {
+            background-color: black;
+            color: red;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <link rel="icon" href="logo.png" type="images/x-icon">
+</head>
+
+<body>
+    <h1>Happy Birthday Raghav</h1>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
+    <script>
+        let f = [[200, 200, 0, 0], [200, 210, -1, 1]];
+        for (let i = 0; i < 10; i++) {
+            f.push([Math.random() * 400, Math.random() * 400, Math.random() * 2 - 1, Math.random() * 2 - 1])
+        }
+        function setup() {
+            createCanvas(400, 400)
+        }
+        let friction = 100;
+        let grav=5;
+        function draw() {
+            background(0, 100)
+            console.log(f[1])
+            for (fs of f) {
+                noStroke()
+                fill(0, 0, 255, 100)
+                ellipse(fs[0], fs[1], 20)
+                fill(0, 0, 255, 200)
+                ellipse(fs[0], fs[1], 15)
+                fill(0, 0, 255, 255)
+                ellipse(fs[0], fs[1], 10)
+                fs[0] += fs[2];
+                fs[1] += fs[3];
+
+                if (fs[1] > 380) {
+                    fs[1] = 380
+                    fs[3] *= -0.8;
+                }
+                if (fs[0] > 380) {
+                    fs[0] = 380
+                    fs[2] *= -0.8;
+                }
+                if (fs[0] < 20) {
+                    fs[0] = 20
+                    fs[2] *= -0.8;
+                }
+
+                let sp = Math.sqrt(Math.pow(fs[2], 2) + Math.pow(fs[3], 2))
+
+                if (fs[2] > 0) {
+                    fs[2] = fs[2] - (sp / friction)
+                    fs[2] = Math.max(fs[2], 0)
+                } else if (fs[2] < 0) {
+                    fs[2] = fs[2] + (sp / friction)
+                    fs[2] = Math.min(fs[2], 0)
+                }
+                if (fs[3] > 0) {
+                    fs[3] = fs[3] - (sp / friction)
+                    fs[3] = Math.max(fs[3], 0)
+                } else if (fs[3] < 0) {
+                    fs[3] = fs[3] + (sp / friction)
+                    fs[3] = Math.min(fs[3], 0)
+                }
+                fs[3] += Math.random() * 0.1 + 0.05;
+                fs[2] += Math.random() * 0.1 - 0.05;
+
+                if (mouseX < 400 && mouseY < 400) {
+                    let dist = Math.sqrt(Math.pow(fs[0] - mouseX, 2) + Math.pow(fs[1] - mouseY, 2))
+                    if(mouseX>fs[0]){
+                        fs[2]+=grav/dist
+                    }else if(mouseX<fs[0]){
+                        fs[2]-=grav/dist
+                    }
+                    if(mouseY>fs[1]){
+                        fs[3]+=grav/dist
+                    }else if(mouseY<fs[1]){
+                        fs[3]-=grav/dist
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
